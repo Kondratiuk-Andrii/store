@@ -1,10 +1,9 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse
 
-from products.models import Product, ProductCategory
-from products.models import Basket
+from products.models import Basket, Product, ProductCategory
+from django.core.paginator import Paginator
 
 
 def index(request):
@@ -14,12 +13,18 @@ def index(request):
     return render(request, 'products/index.html', context)
 
 
-def products(request, category_id=None):
+def products(request, category_slug=None, page=1):
+    products = Product.objects.filter(category__slug=category_slug) if category_slug else Product.objects.all()
+
+    per_page = 2
+    paginator = Paginator(object_list=products, per_page=per_page)
+    products_paginator = paginator.page(page)
+
     context = {
         'title': 'Store - Каталог',
         'categories': ProductCategory.objects.all(),
-        'cat_selected': category_id if category_id else 0,
-        'products': Product.objects.filter(category_id=category_id) if category_id else Product.objects.all(),
+        'category_slug': category_slug,
+        'products': products_paginator,
     }
     return render(request, 'products/products.html', context)
 
@@ -28,7 +33,6 @@ def products(request, category_id=None):
 def basket_add(request, product_id):
     product = Product.objects.get(id=product_id)
     basket = Basket.objects.filter(user=request.user, product=product)
-
     if not basket.exists():
         Basket.objects.create(user=request.user, product=product, quantity=1)
     else:
@@ -42,7 +46,6 @@ def basket_add(request, product_id):
 @login_required
 def basket_change(request, basket_id, operator):
     basket = Basket.objects.get(id=basket_id)
-    # if operator:
     if operator == 'add':
         basket.quantity += 1
         basket.save()

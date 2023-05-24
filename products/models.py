@@ -1,17 +1,31 @@
 from django.db import models
-
+from django.urls import reverse
+from pytils.translit import slugify
 from users.models import User
 
 
 class ProductCategory(models.Model):
     name = models.CharField(max_length=128)
     description = models.TextField(null=True, blank=True)
+    slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
+
+    def __str__(self):
+        return f"{self.name}"
+
+    def get_absolute_url(self):
+        return reverse('products:category', kwargs={'category_slug': self.slug})
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
 
     def has_products(self):
         return len(Product.objects.filter(category=self)) > 0
 
-    def __str__(self):
-        return f"{self.name}"
+    class Meta:
+        verbose_name = 'category'
+        verbose_name_plural = 'categories'
 
 
 class Product(models.Model):
@@ -24,6 +38,10 @@ class Product(models.Model):
 
     def __str__(self):
         return f"Категория: {self.category} | {self.name}"
+
+    class Meta:
+        verbose_name = 'product'
+        verbose_name_plural = 'products'
 
 
 class BasketQuerySet(models.QuerySet):
@@ -42,8 +60,12 @@ class Basket(models.Model):
 
     objects = BasketQuerySet.as_manager()
 
+    def __str__(self):
+        return f"Корзина для {self.user.username} | Продукт: {self.product.name}"
+
     def sum(self):
         return self.product.price * self.quantity
 
-    def __str__(self):
-        return f"Корзина для {self.user.username} | Продукт: {self.product.name}"
+    class Meta:
+        verbose_name = 'basket'
+        verbose_name_plural = 'baskets'

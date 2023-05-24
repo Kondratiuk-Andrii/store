@@ -1,10 +1,10 @@
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import HttpResponseRedirect, render
 from django.urls import reverse
 
-from users.forms import UserLoginForm, UserRegistrationForm, UserProfileForm
 from products.models import Basket
+from users.forms import UserLoginForm, UserProfileForm, UserRegistrationForm
 
 
 def login(request):
