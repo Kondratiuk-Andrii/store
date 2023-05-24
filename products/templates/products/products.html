@@ -15,8 +15,19 @@
 
                 <h1 class="my-4">Store</h1>
                 <div class="list-group">
+                    {% if cat_selected == 0 %}
+                        <div class="list-group-item">Все товары</div>
+                    {% else %}
+                        <a href="{% url 'products:category' cat_selected %}" class="list-group-item">Все товары</a>
+                    {% endif %}
                     {% for category in categories %}
-                        <a href="#" class="list-group-item">{{ category.name }}</a>
+                        {% if category.has_products %}
+                            {% if category.id == cat_selected %}
+                                <div class="list-group-item">{{ category.name }}</div>
+                            {% else %}
+                                <a href="{% url 'products:category' category.id %}" class="list-group-item">{{ category.name }}</a>
+                            {% endif %}
+                        {% endif %}
                     {% endfor %}
                 </div>
 

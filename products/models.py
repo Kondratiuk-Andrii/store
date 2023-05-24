@@ -7,6 +7,9 @@ class ProductCategory(models.Model):
     name = models.CharField(max_length=128)
     description = models.TextField(null=True, blank=True)
 
+    def has_products(self):
+        return len(Product.objects.filter(category=self)) > 0
+
     def __str__(self):
         return f"{self.name}"
 
