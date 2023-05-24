@@ -16,15 +16,18 @@ def index(request):
 def products(request, category_slug=None, page=1):
     products = Product.objects.filter(category__slug=category_slug) if category_slug else Product.objects.all()
 
-    per_page = 2
+    per_page = 3
     paginator = Paginator(object_list=products, per_page=per_page)
     products_paginator = paginator.page(page)
+
+    page_obj = paginator.get_page(page)
 
     context = {
         'title': 'Store - Каталог',
         'categories': ProductCategory.objects.all(),
         'category_slug': category_slug,
         'products': products_paginator,
+        'page_obj': page_obj,
     }
     return render(request, 'products/products.html', context)
 
