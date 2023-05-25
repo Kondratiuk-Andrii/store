@@ -1,35 +1,36 @@
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.views.generic import ListView
+from django.views.generic.base import TemplateView
 
 from products.models import Basket, Product, ProductCategory
-from django.core.paginator import Paginator
 
 
-def index(request):
-    context = {
-        'title': 'Store',
-    }
-    return render(request, 'products/index.html', context)
+class IndexView(TemplateView):
+    template_name = 'products/index.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Store'
+        return context
 
 
-def products(request, category_slug=None, page=1):
-    products = Product.objects.filter(category__slug=category_slug) if category_slug else Product.objects.all()
+class ProductsListView(ListView):
+    model = Product
+    template_name = 'products/products.html'
+    paginate_by = 3
 
-    per_page = 3
-    paginator = Paginator(object_list=products, per_page=per_page)
-    products_paginator = paginator.page(page)
+    def get_queryset(self):
+        queryset = super(ProductsListView, self).get_queryset()
+        category_slug = self.kwargs.get('category_slug')
+        return queryset.filter(category__slug=category_slug) if category_slug else queryset
 
-    page_obj = paginator.get_page(page)
-
-    context = {
-        'title': 'Store - Каталог',
-        'categories': ProductCategory.objects.all(),
-        'category_slug': category_slug,
-        'products': products_paginator,
-        'page_obj': page_obj,
-    }
-    return render(request, 'products/products.html', context)
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Store - Каталог'
+        context['categories'] = ProductCategory.objects.all()
+        context['category_slug'] = self.kwargs.get('category_slug')
+        return context
 
 
 @login_required
