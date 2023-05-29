@@ -16,26 +16,6 @@ class UserLoginView(LoginView):
     # title = 'Store - Авторизация'
 
 
-def login(request):
-    if request.method == 'POST':
-        form = UserLoginForm(data=request.POST)
-        if form.is_valid():
-            username = request.POST['username']
-            password = request.POST['password']
-            user = auth.authenticate(username=username, password=password)
-            if user:
-                auth.login(request, user)
-                return HttpResponseRedirect(reverse('products:products'))
-    else:
-        form = UserLoginForm()
-
-    context = {
-        'title': 'Store - Авторизация',
-        'form': form,
-    }
-    return render(request, 'users/login.html', context)
-
-
 class UserRegisterView(SuccessMessageMixin, CreateView):
     model = User
     form_class = UserRegistrationForm
@@ -58,3 +38,10 @@ class UserProfileView(UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('users:profile', args=(self.object.id,))
+
+
+def delete_photo(request, user_id):
+    user = User.objects.get(pk=user_id)
+    user.image = None
+    user.save()
+    return HttpResponseRedirect(request.META['HTTP_REFERER'])
