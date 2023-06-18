@@ -3,7 +3,7 @@ from django.contrib.auth.views import LogoutView
 from django.urls import path
 
 from users.views import (EmailVerificationView, UserLoginView, UserProfileView,
-                         UserRegisterView, delete_photo)
+                         UserRegisterView, delete_photo, verify)
 
 app_name = 'users'
 
@@ -16,4 +16,6 @@ urlpatterns = [
     path('delete_photo/<int:user_id>', delete_photo, name='delete_photo'),
 
     path('verify/<str:email>/<uuid:code>', EmailVerificationView.as_view(), name='email_verification'),
+
+    path('verify/<str:email>', verify, name='verify'),
 ]

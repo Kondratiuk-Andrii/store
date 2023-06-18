@@ -2,16 +2,14 @@
 {% load static %}
 {% load socialaccount %}
 
-{#<a href="{% provider_login_url "openid" openid="https://www.google.com/accounts/o8/id" next="/success/url/" %}">Google</a>#}
-{#<a href="{% provider_login_url "twitter" %}">Twitter</a>#}
-
 {% block content %}
     <main>
         <div class="container mt-5">
             <div class="row justify-content-center">
                 <div class="col-lg-5">
                     {% if messages or form.non_field_errors %}
-                        <div class="alert {% if messages %} alert-success {% else %} alert-warning {% endif %} alert-dismissible fade show" role="alert"
+                        <div class="alert {% if messages %} alert-success {% else %} alert-warning {% endif %} alert-dismissible fade show"
+                             role="alert"
                              style="margin-top: 50px;">
                             {% if messages %}
                                 {% for message in messages %}
@@ -44,13 +42,14 @@
                                     <input class="btn btn-primary" type="submit" value="Авторизоваться">
                                 </div>
                                 <div class="form-group d-flex align-items-center justify-content-between mt-3 mb-0 row">
-                                    <a href="#" class="col-lg-4 text-center">
-                                        <i class="fab fa-google fa-2x" style="color: #d9503e;"></i>
-                                    </a>
                                     <a href="{% provider_login_url 'github' %}" class="col-lg-4 text-center">
                                         <i class="fab fa-github fa-2x" style="color: #303030;"></i>
                                     </a>
-                                    <a href="#" class="col-lg-4 text-center">
+                                    <a href="{% provider_login_url 'google' %}"
+                                       class="col-lg-4 text-center">
+                                        <i class="fab fa-google fa-2x" style="color: #d9503e;"></i>
+                                    </a>
+                                    <a href="{% provider_login_url 'facebook' method="oauth2" %}" class="col-lg-4 text-center">
                                         <i class="fab fa-facebook fa-2x" style="color: #405794;"></i>
                                     </a>
                                 </div>
