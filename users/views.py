@@ -3,13 +3,12 @@ from datetime import timedelta
 
 from django.contrib.auth.views import LoginView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.shortcuts import HttpResponseRedirect, render
-from django.utils.timezone import now
+from django.shortcuts import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
+from django.utils.timezone import now
 from django.views.generic import CreateView, TemplateView, UpdateView
 
 from common.views import CommonMixin
-from products.models import Basket
 from users.forms import UserLoginForm, UserProfileForm, UserRegistrationForm
 from users.models import EmailVerification, User
 

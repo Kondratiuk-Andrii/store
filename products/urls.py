@@ -5,6 +5,7 @@ from products.views import ProductsListView, basket_add, basket_change
 app_name = 'products'
 
 urlpatterns = [
+    # path('', cache_page(30)(ProductsListView.as_view()), name='products'),
     path('', ProductsListView.as_view(), name='products'),
     path('page/<int:page>/', ProductsListView.as_view(), name='paginator'),
     path('<slug:category_slug>/', ProductsListView.as_view(), name='category'),
