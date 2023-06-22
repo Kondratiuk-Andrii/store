@@ -59,7 +59,7 @@
                     </div>
                 {% endif %}
                 <div class="row {% if page_obj.number != 1 or category_slug %} my-5 {% endif %}">
-                    {% cache 30 object_list %}
+{#                    {% cache 30 object_list %}#}
                         {% for product in object_list %}
                             <div class="col-lg-4 col-md-6 mb-4">
                                 <div class="card h-100">
@@ -83,7 +83,7 @@
                                 </div>
                             </div>
                         {% endfor %}
-                    {% endcache %}
+{#                    {% endcache %}#}
                 </div>
                 {% if is_paginated %}
                     {% if category_slug %}

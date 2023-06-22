@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
 
     'django.contrib.sites',
 
@@ -52,6 +53,7 @@ INSTALLED_APPS = [
 
     'products',
     'users',
+    'orders',
 ]
 
 MIDDLEWARE = [
@@ -233,4 +235,12 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 ACCOUNT_EMAIL_REQUIRED = True  # new
 ACCOUNT_USERNAME_REQUIRED = True
 
-# ACCOUNT_DEFAULT_HTTP_PROTOCOL = 'https'
+# Celery
+CELERY_BROKER_URL = 'redis://127.0.0.1:6379'
+CELERY_RESULT_BACKEND = 'redis://127.0.0.1:6379'
+
+# Stripe
+
+STRIPE_PUBLIC_KEY = 'pk_test_51MY5PzLx4vCkIEUJhpQbh3tKeke5UCOEO7pSQ12243niAEyQ0p2ppI4r10XwIrmJ0oo5htgnxluJgatSXInWwiKD00WkGK6Ric'
+STRIPE_SECRET_KEY = 'sk_test_51MY5PzLx4vCkIEUJr9bsUikeobmg3K6trWGLlKyOcPkCALlePEihOBdrnkc7ecIWrJbfMevCbCTvQ6zLY0mCgblj00emkBkbEz'
+STRIPE_WEBHOOK_SECRET = 'whsec_e877c2e773f0e93288361b9bd7208886244decf2c832ac673ece84ba3d6a0a59'
