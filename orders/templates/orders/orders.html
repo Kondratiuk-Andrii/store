@@ -10,7 +10,6 @@
                     <table class="table">
                         <thead>
                         <tr class="table-light">
-                            <th scope="col">#</th>
                             <th scope="col">Статус</th>
                             <th scope="col">Создан</th>
                             <th scope="col">Итого</th>
@@ -19,8 +18,8 @@
                         </thead>
                         <tbody>
                         {% for order in object_list %}
-                            <tr>
-                                <th scope="row">{{ order.id }}</th>
+                            <tr class="{% if order.status == 3 %} alert-success {% elif order.status == 2 %} alert-warning {% else %} alert-primary {% endif %}">
+
                                 <td>{{ order.get_status_display }}</td>
                                 <td>{{ order.created|naturaltime }}</td>
                                 <td>{{ order.basket_history.total_sum|intcomma }} грн.</td>

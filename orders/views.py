@@ -72,12 +72,6 @@ class OrderCreateView(CommonMixin, CreateView):
 
 
 @csrf_exempt
-# def stripe_webhook_view(request):
-#     payload = request.body
-#
-#     print(payload)
-#
-#     return HttpResponse(status=200)
 def stripe_webhook_view(request):
     payload = request.body
     sig_header = request.META['HTTP_STRIPE_SIGNATURE']
